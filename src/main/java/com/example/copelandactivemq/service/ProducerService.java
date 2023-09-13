@@ -1,5 +1,6 @@
 package com.example.copelandactivemq.service;
 
+import com.example.copelandactivemq.model.TopicName;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,9 +24,8 @@ public class ProducerService {
     @Autowired
     JmsTemplate jmsTemplate;
 
-    public String publishToTopic(String inputMessage, String topic, String key) throws JsonProcessingException {
+    public String publishToTopic(String inputMessage, TopicName topic, String key) throws JsonProcessingException {
 
-        //TODO switch String into Enum
         //TODO validation for different topic key
 
         boolean authorized = key.equals("admin") || key.equals("fantasyPrivateKey")
@@ -33,13 +33,13 @@ public class ProducerService {
 
         if (authorized) {
             switch (topic) {
-                case "FantasyNameTopic" -> {
+                case FantasyNameTopic -> {
                     return sendMessage(inputMessage, fantasyTopic);
                 }
-                case "CrimeNameTopic" -> {
+                case CrimeNameTopic -> {
                     return sendMessage(inputMessage, crimeTopic);
                 }
-                case "ActionNameTopic" -> {
+                case ActionNameTopic -> {
                     return sendMessage(inputMessage, actionTopic);
                 }
             }

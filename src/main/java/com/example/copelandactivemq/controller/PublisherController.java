@@ -1,5 +1,6 @@
 package com.example.copelandactivemq.controller;
 
+import com.example.copelandactivemq.model.TopicName;
 import com.example.copelandactivemq.service.ProducerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,9 +21,9 @@ public class PublisherController {
     }
 
     @PostMapping(path = "/publish")
-    @Operation(summary = "Send a message to subscribers")
+    @Operation(summary = "Send a message to subscribers. You will need the private key")
     public String publishToTopic(@RequestBody String inputMessage,
-                                 @RequestParam("topic") String topic,
+                                 @RequestParam("topic") TopicName topic,
                                  @RequestParam("key") String key) throws JsonProcessingException {
         return producerService.publishToTopic(inputMessage, topic, key);
     }

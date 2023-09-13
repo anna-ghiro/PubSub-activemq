@@ -58,12 +58,7 @@ public class JmsConfig {
         return new DynamicDestinationResolver() {
             @Override
             public Destination resolveDestinationName(Session session, String destinationName, boolean pubSubDomain) throws JMSException {
-//                if(destinationName.endsWith("Topic")) {
-//                    pubSubDomain = true;
-//                }
-//                else {
-//                    pubSubDomain = false;
-//                }
+
                 return super.resolveDestinationName(session,destinationName,true);
             }
         };
