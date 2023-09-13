@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.jms.TextMessage;
 
 @Component
-public class ProducerService {
+public class PublisherService {
 
     @Value("${spring.activemq.fantasyTopic}")
     String fantasyTopic;
