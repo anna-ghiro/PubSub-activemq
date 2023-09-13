@@ -2,13 +2,13 @@ package com.example.copelandactivemq.service;
 
 import com.example.copelandactivemq.model.TopicName;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 
-@Component
+@Service
 public class SubscriberService {
 
     @JmsListener(destination = "FantasyNameTopic")

@@ -1,15 +1,16 @@
 package com.example.copelandactivemq.service;
 
+import com.example.copelandactivemq.exception.UnauthorizedException;
 import com.example.copelandactivemq.model.TopicName;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.jms.TextMessage;
 
-@Component
+@Service
 public class PublisherService {
 
     @Value("${spring.activemq.fantasyTopic}")
@@ -24,12 +25,20 @@ public class PublisherService {
     @Autowired
     JmsTemplate jmsTemplate;
 
-    public String publishToTopic(String inputMessage, TopicName topic, String key) throws JsonProcessingException {
+    public String publishToTopic(String inputMessage, TopicName topic, String key) {
 
-        //TODO validation for different topic key
+        boolean authorized = key.equals("admin");
 
-        boolean authorized = key.equals("admin") || key.equals("fantasyPrivateKey")
-                || key.equals("crimePrivateKey") || key.equals("actionPrivateKey");
+        if (!authorized) {
+            switch (topic) {
+                case FantasyNameTopic -> authorized = key.equals("fantasyPrivateKey");
+                case CrimeNameTopic -> authorized = key.equals("crimePrivateKey");
+                case ActionNameTopic -> authorized = key.equals("actionPrivateKey");
+                default -> {
+                    return "topic does not exist";
+                }
+            }
+        }
 
         if (authorized) {
             switch (topic) {
@@ -43,8 +52,10 @@ public class PublisherService {
                     return sendMessage(inputMessage, actionTopic);
                 }
             }
+        } else {
+            throw new UnauthorizedException("You are not authorized");
         }
-        return "You are not authorized";
+        return null;
     }
 
     private String sendMessage(String inputMessage, String topic) {
