@@ -2,7 +2,6 @@ package com.example.copelandactivemq.service;
 
 import com.example.copelandactivemq.exception.UnauthorizedException;
 import com.example.copelandactivemq.model.TopicName;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
@@ -68,7 +67,7 @@ public class PublisherService {
         } catch (Exception ex) {
             System.out.println("ERROR in sending message to topic " + topic);
         }
-        return null;
+        return inputMessage;
     }
 
 }
